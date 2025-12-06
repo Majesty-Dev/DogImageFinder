@@ -1,0 +1,33 @@
+import requests
+import json
+import streamlit as st
+
+def get_image():
+    result = requests.get('https://dog.ceo/api/breeds/image/random')
+    image_url = json.loads(result.content.decode())['message']
+    img = requests.get(image_url).content
+
+    filename = "dog-image.jpg"
+    with open(filename, "wb") as f:
+        f.write(img)
+
+    return filename
+
+
+if "img_path" not in st.session_state:
+    st.session_state.img_path = None
+
+_,headingCentre,_=st.columns(3)
+_,buttonCentre,_=st.columns(3)
+_,imageAlign,_=st.columns(3)
+with headingCentre:
+    st.write("### **Dog Image Finder**")
+
+with buttonCentre:
+    if st.button("Get New Image"):
+        st.session_state.img_path = get_image()
+        st.experimental_rerun()
+
+with imageAlign:
+    if st.session_state.img_path:
+        st.image(st.session_state.img_path)
