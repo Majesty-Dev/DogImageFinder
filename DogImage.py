@@ -11,23 +11,16 @@ def get_image():
     with open(filename, "wb") as f:
         f.write(img)
 
-    return filename
+    return img
 
-
-if "img_path" not in st.session_state:
-    st.session_state.img_path = None
 
 _,headingCentre,_=st.columns(3)
 _,buttonCentre,_=st.columns(3)
 _,imageAlign,_=st.columns(3)
+
 with headingCentre:
     st.write("### **Dog Image Finder**")
 
 with buttonCentre:
     if st.button("Get New Image"):
-        st.session_state.img_path = get_image()
-        st.experimental_rerun()
-
-with imageAlign:
-    if st.session_state.img_path:
-        st.image(st.session_state.img_path)
+        st.image(get_image())
